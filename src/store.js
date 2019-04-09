@@ -18,7 +18,7 @@ function update(model = { running: false, time: 0 }, action) {
     }
   };
 
-  return (updates[action.type] || (m => {}))(model);
+  return (updates[action.type] || (() => model))(model);
 }
 
 const initialState = { running: false, time: 42 };
