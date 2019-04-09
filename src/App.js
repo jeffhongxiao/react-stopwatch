@@ -1,21 +1,21 @@
 import React, { Component } from "react";
 import "./App.css";
+import container from "./store";
 
 class App extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      running: false,
-      time: 0
-    };
+    this.state = container.getState();
 
-    this.update = this.update.bind(this);
+    container.subscribe(this.render);
     this.timer = this.timer.bind(this);
   }
 
   timer() {
-    this.setState(this.update(this.state, "TICK"));
+    // this.setState(this.update(this.state, "TICK"));
+
+    // container.dispatch({type: 'TICK'});
   }
 
   componentDidMount() {
@@ -25,24 +25,6 @@ class App extends Component {
     clearInterval(this.intervalId);
   }
 
-  update(model, intent) {
-    const updates = {
-      TICK: m => {
-        if (!this.state.running) {
-          return m;
-        }
-        return Object.assign({}, m, { time: this.state.time + 1 });
-      },
-      STOP: m => {
-        return Object.assign({}, m, { running: false });
-      },
-      START: m => {
-        return Object.assign({}, m, { running: true });
-      }
-    };
-    return updates[intent](model);
-  }
-
   render() {
     const view = model => {
       let minutes = Math.floor(model.time / 60);
@@ -50,7 +32,7 @@ class App extends Component {
       let secondsFormatted = `${seconds < 10 ? "0" : ""}${seconds}`;
 
       let handler = event => {
-        this.setState(this.update(model, model.running ? "STOP" : "START"));
+        container.dispatch(container.getState().running ? {type: 'Stop'} : {type: 'Start'});
       };
 
       return (
