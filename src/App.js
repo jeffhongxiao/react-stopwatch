@@ -11,11 +11,28 @@ class App extends Component {
     };
 
     this.update = this.update.bind(this);
+    this.timer = this.timer.bind(this);
+  }
+
+  timer() {
+    this.setState(this.update(this.state, "TICK"));
+  }
+
+  componentDidMount() {
+    this.intervalId = setInterval(this.timer, 1000);
+  }
+  componentWillUnmount() {
+    clearInterval(this.intervalId);
   }
 
   update(model, intent) {
-    console.log("intent = ", intent);
     const updates = {
+      TICK: m => {
+        if (!this.state.running) {
+          return m;
+        }
+        return Object.assign({}, m, { time: this.state.time + 1 });
+      },
       STOP: m => {
         return Object.assign({}, m, { running: false });
       },
