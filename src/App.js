@@ -1,14 +1,11 @@
 import React, { Component } from "react";
 import "./App.css";
-import container from "./store";
+import { connect } from 'react-redux';
 
 class App extends Component {
   constructor(props) {
     super(props);
 
-    this.state = container.getState();
-
-    container.subscribe(this.render);
     this.timer = this.timer.bind(this);
   }
 
@@ -32,7 +29,7 @@ class App extends Component {
       let secondsFormatted = `${seconds < 10 ? "0" : ""}${seconds}`;
 
       let handler = event => {
-        container.dispatch(container.getState().running ? {type: 'Stop'} : {type: 'Start'});
+        model.dispatch(model.running ? {type: 'Stop'} : {type: 'Start'});
       };
 
       return (
@@ -45,8 +42,9 @@ class App extends Component {
       );
     };
 
-    return view(this.state);
+    return view(this.props);
   }
 }
 
-export default App;
+const mapStateToProps = (state) => state;
+export default connect(mapStateToProps)(App);
