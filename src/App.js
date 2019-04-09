@@ -2,27 +2,38 @@ import React, { Component } from "react";
 import "./App.css";
 
 class App extends Component {
-  render() {
-    let model = {
+  constructor(props) {
+    super(props);
+
+    this.state = {
       running: false,
       time: 0
     };
 
-    const update = (model, intent) => {
-      const updates = {
-        'STOP': (m) => {return Object.assign({}, m, {running: false})},
-        'START': (m) => {return Object.assign({}, m, {running: true})},
-      };
-      return updates[intent](model);
-    };
+    this.update = this.update.bind(this);
+  }
 
+  update(model, intent) {
+    console.log("intent = ", intent);
+    const updates = {
+      STOP: m => {
+        return Object.assign({}, m, { running: false });
+      },
+      START: m => {
+        return Object.assign({}, m, { running: true });
+      }
+    };
+    return updates[intent](model);
+  }
+
+  render() {
     const view = model => {
       let minutes = Math.floor(model.time / 60);
       let seconds = model.time % 60;
       let secondsFormatted = `${seconds < 10 ? "0" : ""}${seconds}`;
 
       let handler = event => {
-        model = update(model, model.running ? "STOP" : "START");
+        this.setState(this.update(model, model.running ? "STOP" : "START"));
       };
 
       return (
@@ -30,12 +41,12 @@ class App extends Component {
           <div>
             {minutes}:{secondsFormatted}
           </div>
-          <button onClick={handler}>{model.running ? 'Stop' : 'Start'}</button>
+          <button onClick={handler}>{model.running ? "Stop" : "Start"}</button>
         </div>
       );
     };
 
-    return view(model);
+    return view(this.state);
   }
 }
 
