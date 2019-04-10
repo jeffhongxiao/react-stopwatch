@@ -21,6 +21,5 @@ function update(model = { running: false, time: 0 }, action) {
   return (updates[action.type] || (() => model))(model);
 }
 
-const initialState = { running: false, time: 42 };
-const container = createStore(update, initialState);
+const container = createStore(update);
 export default container;
