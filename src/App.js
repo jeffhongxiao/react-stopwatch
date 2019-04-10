@@ -10,9 +10,7 @@ class App extends Component {
   }
 
   timer() {
-    // this.setState(this.update(this.state, "TICK"));
-
-    // container.dispatch({type: 'TICK'});
+    this.props.dispatch({type: 'TICK'});
   }
 
   componentDidMount() {
@@ -29,7 +27,7 @@ class App extends Component {
       let secondsFormatted = `${seconds < 10 ? "0" : ""}${seconds}`;
 
       let handler = event => {
-        model.dispatch(model.running ? {type: 'Stop'} : {type: 'Start'});
+        model.dispatch(model.running ? {type: 'STOP'} : {type: 'START'});
       };
 
       return (
