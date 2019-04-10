@@ -8,7 +8,7 @@ function update(model = { running: false, time: 0 }, action) {
       if (!m.running) {
         return Object.assign({}, m);
       }
-      return Object.assign({}, m, { time: 101 });   // this.state.time + 1
+      return Object.assign({}, m, { time: model.time + 1 });
     },
     STOP: m => {
       return Object.assign({}, m, { running: false });
