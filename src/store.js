@@ -21,5 +21,6 @@ function update(model = { running: false, time: 0 }, action) {
   return (updates[action.type] || (() => model))(model);
 }
 
-const container = createStore(update);
+const container = createStore(update, 
+  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
 export default container;
